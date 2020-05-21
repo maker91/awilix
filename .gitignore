@@ -8,7 +8,11 @@ coverage
 
 # Build
 dist
-lib
+lib/*
+!lib/awilix.umd.js
+!lib/awilix.module.js
+!lib/awilix.browser.js
+!lib/awilix.d.ts
 
 # IDE
 .vscode/

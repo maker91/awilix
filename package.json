@@ -19,13 +19,7 @@
     "lint": "npm run check && tslint --project tsconfig.json --fix \"{src,examples}/**/*.ts\" && prettier --write \"{src,examples}/**/*.{ts,js}\"",
     "precommit": "lint-staged && npm test",
     "cover": "npm run test -- --coverage",
-    "coveralls": "npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "publish:pre": "npm run lint && npm run build && npm run cover",
-    "publish:post": "npm publish && git push --follow-tags",
-    "release:prerelease": "npm run publish:pre && npm version prerelease && npm run publish:post",
-    "release:patch": "npm run publish:pre && npm version patch && npm run publish:post",
-    "release:minor": "npm run publish:pre && npm version minor && npm run publish:post",
-    "release:major": "npm run publish:pre && npm version major && npm run publish:post"
+    "coveralls": "npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "files": [
     "lib",
@@ -34,7 +28,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeffijoe/awilix.git"
+    "url": "git+https://github.com/maker91/awilix.git"
   },
   "keywords": [
     "dependency-injection",
@@ -43,12 +37,11 @@
     "soc",
     "service-locator"
   ],
-  "author": "Jeff Hansen <jeff@jeffijoe.com>",
+  "author": "Matthew Reckless <mail@matthewreckless.co.uk>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeffijoe/awilix/issues"
+    "url": "https://github.com/maker91/awilix/issues"
   },
-  "homepage": "https://github.com/jeffijoe/awilix#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.9.0",

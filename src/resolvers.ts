@@ -262,6 +262,7 @@ export function createBuildResolver<T, B extends Resolver<T>>(
     transient: partial(setLifetime, Lifetime.TRANSIENT),
     scoped: partial(setLifetime, Lifetime.SCOPED),
     singleton: partial(setLifetime, Lifetime.SINGLETON),
+    scopedSingleton: partial(setLifetime, Lifetime.SCOPED_SINGLETON),
     setInjectionMode,
     proxy: partial(setInjectionMode, InjectionMode.PROXY),
     classic: partial(setInjectionMode, InjectionMode.CLASSIC),

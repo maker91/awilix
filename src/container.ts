@@ -161,9 +161,17 @@ export interface ContainerOptions {
 }
 
 /**
+ * RegistrationHashEntry
+ */
+export interface ResolverHashEntry<T = any> {
+  resolver: Resolver<T>
+  container: AwilixContainer
+} 
+
+/**
  * Contains a hash of registrations where the name is the key.
  */
-export type RegistrationHash = Record<string | symbol | number, Resolver<any>>
+export type RegistrationHash = Record<string | symbol | number, ResolverHashEntry<any>>
 
 /**
  * Resolution stack.
@@ -375,7 +383,10 @@ export function createContainer<T extends object = any, U extends object = any>(
 
     for (const key of keys) {
       const value = obj[key as any] as Resolver<any>
-      registrations[key as any] = value
+      registrations[key as any] = {
+        resolver: value,
+        container
+      }
     }
 
     // Invalidates the computed registrations.
@@ -412,7 +423,8 @@ export function createContainer<T extends object = any, U extends object = any>(
 
     try {
       // Grab the registration by name.
-      const resolver = computedRegistrations![name as any]
+      const resolverEntry = computedRegistrations![name as any]
+
       if (resolutionStack.indexOf(name) > -1) {
         throw new AwilixResolutionError(
           name,
@@ -431,7 +443,7 @@ export function createContainer<T extends object = any, U extends object = any>(
         return createContainer
       }
 
-      if (!resolver) {
+      if (!resolverEntry) {
         // The following checks ensure that console.log on the cradle does not
         // throw an error (issue #7).
         if (name === util.inspect.custom || name === 'inspect') {
@@ -456,6 +468,11 @@ export function createContainer<T extends object = any, U extends object = any>(
 
         throw new AwilixResolutionError(name, resolutionStack)
       }
+
+      const resolver = resolverEntry.resolver;
+
+      // get the container the resolver was registered to for the SCOPED_SINGLETON lifetime.
+      const registeredContainer = resolverEntry.container; 
 
       // Pushes the currently-resolving module name onto the stack
       resolutionStack.push(name)
@@ -494,6 +511,25 @@ export function createContainer<T extends object = any, U extends object = any>(
           // If we still have not found one, we need to resolve and cache it.
           resolved = resolver.resolve(container)
           container.cache.set(name, { resolver, value: resolved })
+          break
+	      case Lifetime.SCOPED_SINGLETON:
+	        // search up the family tree looking for a cached value
+	        for (const searchContainer of familyTree) {
+            cached = searchContainer.cache.get(name)
+            if (cached !== undefined) {
+              // We found one!
+              resolved = cached.value
+              break
+            }
+          }
+
+          if (resolved !== undefined) {
+            break
+          }
+
+          // If we still have not found one, we need to resolve and cache in the container is was registered to.
+          resolved = resolver.resolve(container)
+          registeredContainer.cache.set(name, { resolver, value: resolved })
           break
         default:
           throw new AwilixResolutionError(
