@@ -1,14 +1,18 @@
 /**
  * Lifetime type.
  */
-export type LifetimeType = 'SINGLETON' | 'TRANSIENT' | 'SCOPED'
+export type LifetimeType =
+  | 'SINGLETON'
+  | 'TRANSIENT'
+  | 'SCOPED'
+  | 'SCOPED_SINGLETON'
 
 /**
  * Lifetime types.
  */
 export const Lifetime: Record<LifetimeType, LifetimeType> = {
   /**
-   * The registration will be resolved once and only once.
+   * The registration will be resolved once and only once, in the root container.
    * @type {String}
    */
   SINGLETON: 'SINGLETON',
@@ -24,4 +28,10 @@ export const Lifetime: Record<LifetimeType, LifetimeType> = {
    * @type {String}
    */
   SCOPED: 'SCOPED',
+
+  /**
+   * The registration will be resolved once and only once, in the container that it was registered in.
+   * @type {String}
+   */
+  SCOPED_SINGLETON: 'SCOPED_SINGLETON',
 }

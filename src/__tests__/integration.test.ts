@@ -19,11 +19,11 @@ describe('integration tests', function () {
     const scope1 = container.createScope()
     const scope2 = container.createScope()
 
-    expect(container.registrations.mainService.lifetime).toBe(Lifetime.SCOPED)
-    expect(container.registrations.anotherService.lifetime).toBe(
+    expect(container.registrations.mainService.resolver.lifetime).toBe(Lifetime.SCOPED)
+    expect(container.registrations.anotherService.resolver.lifetime).toBe(
       Lifetime.SCOPED
     )
-    expect(container.registrations.answerRepository.lifetime).toBe(
+    expect(container.registrations.answerRepository.resolver.lifetime).toBe(
       Lifetime.TRANSIENT
     )
 

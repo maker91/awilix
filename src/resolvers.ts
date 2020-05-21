@@ -38,6 +38,7 @@ export interface BuildResolver<T> extends Resolver<T>, BuildResolverOptions<T> {
   setLifetime(lifetime: LifetimeType): this
   setInjectionMode(mode: InjectionModeType): this
   singleton(): this
+  scopedSingleton(): this
   scoped(): this
   transient(): this
   proxy(): this
@@ -262,6 +263,7 @@ export function createBuildResolver<T, B extends Resolver<T>>(
     transient: partial(setLifetime, Lifetime.TRANSIENT),
     scoped: partial(setLifetime, Lifetime.SCOPED),
     singleton: partial(setLifetime, Lifetime.SINGLETON),
+    scopedSingleton: partial(setLifetime, Lifetime.SCOPED_SINGLETON),
     setInjectionMode,
     proxy: partial(setInjectionMode, InjectionMode.PROXY),
     classic: partial(setInjectionMode, InjectionMode.CLASSIC),

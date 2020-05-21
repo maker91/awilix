@@ -297,8 +297,10 @@ describe('loadModules', function () {
       },
     })
 
-    expect(container.registrations.test.lifetime).toBe(Lifetime.SCOPED)
-    expect(container.registrations.test2.lifetime).toBe(Lifetime.SINGLETON)
+    expect(container.registrations.test.resolver.lifetime).toBe(Lifetime.SCOPED)
+    expect(container.registrations.test2.resolver.lifetime).toBe(
+      Lifetime.SINGLETON
+    )
   })
 
   it('supports array opts syntax with object', function () {
@@ -323,8 +325,10 @@ describe('loadModules', function () {
       },
     })
 
-    expect(container.registrations.test.lifetime).toBe(Lifetime.SCOPED)
-    expect(container.registrations.test2.lifetime).toBe(Lifetime.SINGLETON)
+    expect(container.registrations.test.resolver.lifetime).toBe(Lifetime.SCOPED)
+    expect(container.registrations.test2.resolver.lifetime).toBe(
+      Lifetime.SINGLETON
+    )
   })
 
   it('supports passing in a default injectionMode', function () {
@@ -354,10 +358,12 @@ describe('loadModules', function () {
     })
 
     expect(
-      (container.registrations.test as BuildResolver<any>).injectionMode
+      (container.registrations.test.resolver as BuildResolver<any>)
+        .injectionMode
     ).toBe(InjectionMode.PROXY)
     expect(
-      (container.registrations.test2 as BuildResolver<any>).injectionMode
+      (container.registrations.test2.resolver as BuildResolver<any>)
+        .injectionMode
     ).toBe(InjectionMode.CLASSIC)
   })
 
@@ -403,13 +409,19 @@ describe('loadModules', function () {
         },
       })
 
-      expect(container.registrations.test.lifetime).toBe(Lifetime.TRANSIENT)
+      expect(container.registrations.test.resolver.lifetime).toBe(
+        Lifetime.TRANSIENT
+      )
       expect(
-        (container.registrations.test as BuildResolver<any>).injectionMode
+        (container.registrations.test.resolver as BuildResolver<any>)
+          .injectionMode
       ).toBe(InjectionMode.PROXY)
-      expect(container.registrations.test2.lifetime).toBe(Lifetime.SCOPED)
+      expect(container.registrations.test2.resolver.lifetime).toBe(
+        Lifetime.SCOPED
+      )
       expect(
-        (container.registrations.test2 as BuildResolver<any>).injectionMode
+        (container.registrations.test2.resolver as BuildResolver<any>)
+          .injectionMode
       ).toBe(InjectionMode.CLASSIC)
       expect(container.resolve('test3')).toBe(Test3Class)
     })
@@ -444,8 +456,10 @@ describe('loadModules', function () {
         },
       })
 
-      expect(container.registrations.awesome.lifetime).toBe(Lifetime.SINGLETON)
-      expect(container.registrations.formatNameCalled.lifetime).toBe(
+      expect(container.registrations.awesome.resolver.lifetime).toBe(
+        Lifetime.SINGLETON
+      )
+      expect(container.registrations.formatNameCalled.resolver.lifetime).toBe(
         Lifetime.SCOPED
       )
     })
