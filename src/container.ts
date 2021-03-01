@@ -474,7 +474,7 @@ export function createContainer<T extends object = any, U extends object = any>(
 
       const resolver = resolverEntry.resolver
 
-      // get the container the resolver was registered to for the SCOPED_SINGLETON lifetime.
+      // get the container the resolver was registered to for the ancestral lifetime.
       const registeredContainer = resolverEntry.container
 
       // Pushes the currently-resolving module name onto the stack
@@ -515,7 +515,7 @@ export function createContainer<T extends object = any, U extends object = any>(
           resolved = resolver.resolve(container)
           container.cache.set(name, { resolver, value: resolved })
           break
-        case Lifetime.SCOPED_SINGLETON:
+        case Lifetime.ANCESTRAL:
           // search up the family tree looking for a cached value
           for (const searchContainer of familyTree) {
             cached = searchContainer.cache.get(name)

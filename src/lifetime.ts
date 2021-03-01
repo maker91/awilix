@@ -5,7 +5,7 @@ export type LifetimeType =
   | 'SINGLETON'
   | 'TRANSIENT'
   | 'SCOPED'
-  | 'SCOPED_SINGLETON'
+  | 'ANCESTRAL'
 
 /**
  * Lifetime types.
@@ -33,5 +33,5 @@ export const Lifetime: Record<LifetimeType, LifetimeType> = {
    * The registration will be resolved once and only once, in the container that it was registered in.
    * @type {String}
    */
-  SCOPED_SINGLETON: 'SCOPED_SINGLETON',
+  ANCESTRAL: 'ANCESTRAL',
 }
