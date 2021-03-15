@@ -499,11 +499,7 @@ export function createContainer<T extends object = any, U extends object = any>(
           }
           break
         case Lifetime.SCOPED:
-          // Scoped lifetime means that the container
-          // that resolves the registration also caches it.
-          // When a registration is not found, we travel up
-          // the family tree until we find one that is cached.
-
+          // Scoped lifetime means that the container that resolves the registration also caches it.
           cached = container.cache.get(name)
           if (cached !== undefined) {
             // We found one!
@@ -516,23 +512,14 @@ export function createContainer<T extends object = any, U extends object = any>(
           container.cache.set(name, { resolver, value: resolved })
           break
         case Lifetime.ANCESTRAL:
-          // search up the family tree looking for a cached value
-          for (const searchContainer of familyTree) {
-            cached = searchContainer.cache.get(name)
-            if (cached !== undefined) {
-              // We found one!
-              resolved = cached.value
-              break
-            }
+          // Ancestral lifetime means cache in the container that registered it.
+          cached = registeredContainer.cache.get(name)
+          if (!cached) {
+            resolved = resolver.resolve(container)
+            registeredContainer.cache.set(name, { resolver, value: resolved })
+          } else {
+            resolved = cached.value
           }
-
-          if (resolved !== undefined) {
-            break
-          }
-
-          // If we still have not found one, we need to resolve and cache in the container is was registered to.
-          resolved = resolver.resolve(container)
-          registeredContainer.cache.set(name, { resolver, value: resolved })
           break
         default:
           throw new AwilixResolutionError(
