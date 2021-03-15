@@ -1,11 +1,7 @@
 /**
  * Lifetime type.
  */
-export type LifetimeType =
-  | 'SINGLETON'
-  | 'TRANSIENT'
-  | 'SCOPED'
-  | 'ANCESTRAL'
+export type LifetimeType = 'SINGLETON' | 'TRANSIENT' | 'SCOPED' | 'ANCESTRAL'
 
 /**
  * Lifetime types.
